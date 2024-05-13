@@ -47,7 +47,7 @@ boolean pluie;
 float limite_vent;
 int lum_exterieur;
 
-uint16_t getAnalogMean(uint8_t pin, uint8_t n) {
+uint16_t getAnalogMean(uint8_t pin, uint8_t n) { //Stabilitée des capteur  ; moyenne des valeur 
   int sum = 0;
   for (int i = 0; i < n; i++) {
     sum += analogRead(pin);
@@ -56,7 +56,7 @@ uint16_t getAnalogMean(uint8_t pin, uint8_t n) {
   return sum / n;
 }
 
-float getGroveTemperature(uint8_t pin, uint8_t unit) {
+float getGroveTemperature(uint8_t pin, uint8_t unit) { // Code constructeur de conversion, source Seeed, modifié par vittascience
   float R = 1023.0/getAnalogMean(pin, 5) - 1;
   float t = 1/(log(R)/4275+1/298.15) - 273.15; // celsius
   switch (unit) {
@@ -90,14 +90,14 @@ void lcd() {
       texte1 = "Manuel: Off";
     }
   }
-  lcdRgb.setRGB(51, 51, 255);
+  lcdRgb.setRGB(51, 51, 255); //Mettre écran bleu
   lcdRgb.setCursor(0, 0);
   lcdRgb.print(String((String("Lumiere : ") + String(texte1))));
   lcdRgb.setCursor(0, 1);
   lcdRgb.print(String((String("Vent :  ") + String(vitesse_vent))));
   delay(1000*3);
   lcdRgb.setCursor(0, 1);
-  lcdRgb.print(String((String(" | Temp : ") + String(temp))));
+  lcdRgb.print(String((String("Temp : ") + String(temp))));
 }
 
 void recup_var() {
