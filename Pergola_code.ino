@@ -98,6 +98,7 @@ void lcd() {
   delay(1000*3);
   lcdRgb.setCursor(0, 1);
   lcdRgb.print(String((String("Temp : ") + String(temp))));
+  delay(1000*3);
 }
 
 void recup_var() {
@@ -109,12 +110,12 @@ void recup_var() {
   interrupteur_lum = true;
   //interrupteur_lum2 | off = éteindre , on = éclairage standard
   interrupteur_lum2 = digitalRead(12);
-  vitesse_vent = analogRead(A1);
+  vitesse_vent = analogRead(A4);
   temp = getGroveTemperature(PIN_TEMPERATURE_SENSOR_A0, 0);
   potentiometre = analogRead(A3);
   pluie = digitalRead(6);
   limite_vent = 1023 * 0.7;
-  lum_exterieur = analogRead(A2);
+  lum_exterieur = analogRead(A12);
   Serial.println((String("Capteur lum : ") + String(lum_exterieur)));
   Serial.println((String("Capteur pluie : ") + String(pluie)));
   Serial.println((String("Capteur temp : ") + String(temp)));
@@ -127,11 +128,11 @@ void setup() {
   lcdRgb.begin(16, 2);
   pinMode(4, INPUT);
   pinMode(12, INPUT);
-  pinMode(A1, INPUT);
+  pinMode(A12, INPUT);
   pinMode(PIN_TEMPERATURE_SENSOR_A0, INPUT);
-  pinMode(A3, INPUT);
+  pinMode(A4, INPUT);
   pinMode(6, INPUT);
-  pinMode(A2, INPUT);
+  pinMode(A3, INPUT);
   serial_setupConnection(9600);
   recup_var();
   lcd();
