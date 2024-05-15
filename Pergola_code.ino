@@ -174,6 +174,6 @@ void loop() {
     }
   } else {
     //Mode Manuel
-    servomotor_7.write(potentiometre);
+    servomotor_7.write(((potentiometre / 1024) * 180));
   }
 }
