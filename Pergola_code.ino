@@ -1,8 +1,9 @@
 
+
 /*
 
 
-Auteur: cbaie tresneuf
+Auteur: cbaie tresneuf  
 
 Interface: arduino
 
@@ -30,12 +31,14 @@ sur l'interface http://vittascience.com/arduino
 #include <rgb_lcd.h>
 
 #define PIN_SERVO_7  7
-#define PIN_TEMPERATURE_SENSOR_A0  A0
+#define PIN_TEMPERATURE_SENSOR_A0  A0                           
+#define PIN_POTENTIOMETER_A2  A2
 
 Servo servomotor_7;
 rgb_lcd lcdRgb;
 
 String texte1;
+int loop_lrgb;
 boolean interrupteur_gen;
 boolean interrupteur_lames;
 boolean interrupteur_lum;
@@ -90,15 +93,19 @@ void lcd() {
       texte1 = "Manuel: Off";
     }
   }
-  lcdRgb.setRGB(51, 51, 255); //Mettre écran bleu
+  lcdRgb.setRGB(51, 51, 255);
   lcdRgb.setCursor(0, 0);
   lcdRgb.print(String((String("Lumiere : ") + String(texte1))));
-  lcdRgb.setCursor(0, 1);
-  lcdRgb.print(String((String("Vent :  ") + String(vitesse_vent))));
-  delay(1000*3);
-  lcdRgb.setCursor(0, 1);
-  lcdRgb.print(String((String("Temp : ") + String(temp))));
-  delay(1000*3);
+  loop_lrgb += 1;
+  if (loop_lrgb >= 0 && loop_lrgb < 60) {
+    lcdRgb.setCursor(0, 1);
+    lcdRgb.print(String((String("Cycle :  ") + String(loop_lrgb))));
+  } else if (loop_lrgb >= 60 && loop_lrgb < 120) {
+    lcdRgb.setCursor(0, 1);
+    lcdRgb.print(String((String("Temp : ") + String(temp))));
+  } else if (loop_lrgb > 120) {
+    loop_lrgb = 0;
+  }
 }
 
 void recup_var() {
@@ -123,8 +130,11 @@ void recup_var() {
 
 
 void setup() {
-  pinMode(13, OUTPUT);
-  servomotor_7.attach(PIN_SERVO_7);
+  Serial.begin(9600);
+  servomotor_7.attach(PIN_SERVO_7);  // Attacher le servo une seule fois dans setup
+  servomotor_7.write(0);  // Mettre le servo à 0 degrés
+  pinMode(PIN_POTENTIOMETER_A2, INPUT);  // Définir la broche du potentiomètre comme entrée
+  pinMode(10, OUTPUT); // LuM Temp
   lcdRgb.begin(16, 2);
   pinMode(4, INPUT);
   pinMode(12, INPUT);
@@ -174,6 +184,9 @@ void loop() {
     }
   } else {
     //Mode Manuel
-    servomotor_7.write(((potentiometre / 1024) * 180));
+    int potValue = analogRead(PIN_POTENTIOMETER_A2);  // Lire la valeur du potentiomètre
+    float angle = (potValue / 1023.0) * 90;  // Convertir la valeur en angle (0 à 180 degrés)
+    servomotor_7.write(angle);  // Définir l'angle du servo
+    delay(15);  // Ajouter un léger délai pour stabiliser le signal
   }
 }
