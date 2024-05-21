@@ -1,0 +1,30 @@
+#include <Servo.h>
+
+#define PIN_POTENTIOMETER_A2  A2
+#define PIN_SERVO_7  7
+
+Servo servomotor_7;
+
+void setup() {
+  Serial.begin(9600);
+  servomotor_7.attach(PIN_SERVO_7);  // Attacher le servo une seule fois dans setup
+  servomotor_7.write(0);  // Mettre le servo à 0 degrés
+  delay(1000);  // Attendre 1 seconde
+  servomotor_7.write(180);  // Mettre le servo à 180 degrés
+  delay(1000);  // Attendre 1 seconde
+  servomotor_7.write(0);  // Revenir à 0 degrés
+  pinMode(PIN_POTENTIOMETER_A2, INPUT);  // Définir la broche du potentiomètre comme entrée
+}
+
+void loop() {
+  int potValue = analogRead(PIN_POTENTIOMETER_A2);  // Lire la valeur du potentiomètre
+  float angle = (potValue / 1023.0) * 180;  // Convertir la valeur en angle (0 à 180 degrés)
+
+  servomotor_7.write(angle);  // Définir l'angle du servo
+  Serial.print("Potentiometer Value: ");
+  Serial.print(potValue);  // Afficher la valeur du potentiomètre
+  Serial.print(" -> Angle: ");
+  Serial.println(angle);  // Afficher l'angle correspondant
+  
+  delay(15);  // Ajouter un léger délai pour stabiliser le signal
+}
