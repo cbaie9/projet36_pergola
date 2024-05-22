@@ -25,13 +25,12 @@ sur l'interface http://vittascience.com/arduino
 
 
 */
-
 #include <Servo.h>
 #include <Wire.h>
 #include <rgb_lcd.h>
 
 #define PIN_SERVO_7  7
-#define PIN_TEMPERATURE_SENSOR_A0  A0                           
+#define PIN_TEMPERATURE_SENSOR_A0  A14                          
 #define PIN_POTENTIOMETER_A2  A2
 
 Servo servomotor_7;
@@ -99,7 +98,7 @@ void lcd() {
   loop_lrgb += 1;
   if (loop_lrgb >= 0 && loop_lrgb < 60) {
     lcdRgb.setCursor(0, 1);
-    lcdRgb.print(String((String("Cycle :  ") + String(loop_lrgb))));
+    lcdRgb.print(String((String("Lum :  ") + String(lum_exterieur))));
   } else if (loop_lrgb >= 60 && loop_lrgb < 120) {
     lcdRgb.setCursor(0, 1);
     lcdRgb.print(String((String("Temp : ") + String(temp))));
@@ -117,12 +116,12 @@ void recup_var() {
   interrupteur_lum = true;
   //interrupteur_lum2 | off = éteindre , on = éclairage standard
   interrupteur_lum2 = digitalRead(12);
-  vitesse_vent = analogRead(A4);
+  vitesse_vent = analogRead(A6);
   temp = getGroveTemperature(PIN_TEMPERATURE_SENSOR_A0, 0);
-  potentiometre = analogRead(A3);
+  potentiometre = analogRead(PIN_POTENTIOMETER_A2);
   pluie = digitalRead(6);
   limite_vent = 1023 * 0.7;
-  lum_exterieur = analogRead(A12);
+  lum_exterieur = analogRead(A4);
   Serial.println((String("Capteur lum : ") + String(lum_exterieur)));
   Serial.println((String("Capteur pluie : ") + String(pluie)));
   Serial.println((String("Capteur temp : ") + String(temp)));
@@ -131,18 +130,18 @@ void recup_var() {
 
 void setup() {
   Serial.begin(9600);
+  lcdRgb.begin(16, 2);
   servomotor_7.attach(PIN_SERVO_7);  // Attacher le servo une seule fois dans setup
   servomotor_7.write(0);  // Mettre le servo à 0 degrés
-  pinMode(PIN_POTENTIOMETER_A2, INPUT);  // Définir la broche du potentiomètre comme entrée
-  pinMode(10, OUTPUT); // LuM Temp
-  lcdRgb.begin(16, 2);
-  pinMode(4, INPUT);
-  pinMode(12, INPUT);
-  pinMode(A12, INPUT);
   pinMode(PIN_TEMPERATURE_SENSOR_A0, INPUT);
+  pinMode(PIN_POTENTIOMETER_A2, INPUT);  // Définir la broche du potentiomètre comme entrée
   pinMode(A4, INPUT);
-  pinMode(6, INPUT);
-  pinMode(A3, INPUT);
+  pinMode(A6, INPUT);
+  pinMode(4, INPUT);
+  pinMode(10, INPUT); // inter lum 1
+  pinMode(12, INPUT); // inter lum 2
+  pinMode(6, INPUT); // pluie
+  pinMode(13, INPUT); // lum temp
   serial_setupConnection(9600);
   recup_var();
   lcd();
