@@ -9,8 +9,8 @@
 #include <rgb_lcd.h>
 
 #define PIN_SERVO_7  7
-#define PIN_TEMPERATURE_SENSOR_A0  A14                          
-#define PIN_POTENTIOMETER_A2  A2
+#define PIN_TEMPERATURE_SENSOR_A14  A14                          
+#define PIN_POTENTIOMETER_A2  A4
 
 Servo servomotor_7;
 rgb_lcd lcdRgb;
@@ -77,7 +77,7 @@ void lcd() {
   loop_lrgb += 1;
   if (loop_lrgb >= 0 && loop_lrgb < 60) {
     lcdRgb.setCursor(0, 1);
-    lcdRgb.print(String((String("Lum :  ") + String(analogRead(A6)))));
+    lcdRgb.print(String((String("Lum :  ") + String(lum_exterieur))));
   } else if (loop_lrgb >= 60 && loop_lrgb < 120) {
     lcdRgb.setCursor(0, 1);
     lcdRgb.print(String((String("Temp : ") + String(temp))));
@@ -96,12 +96,13 @@ void recup_var() {
   //interrupteur_lum2 | off = éteindre , on = éclairage standard
   interrupteur_lum2 = digitalRead(12);
   vitesse_vent = analogRead(A6);
-  temp = getGroveTemperature(PIN_TEMPERATURE_SENSOR_A0, 0);
+  temp = getGroveTemperature(PIN_TEMPERATURE_SENSOR_A14, 0);
   potentiometre = analogRead(PIN_POTENTIOMETER_A2);
   pluie = digitalRead(6);
   limite_vent = 1023 * 0.7;
-  lum_exterieur = analogRead(A6);
-  Serial.println((String("Capteur lum : ") + String(analogRead(A6)/1000)));
+  lum_exterieur = analogRead(A2);
+  lum_exterieur = map(lum_exterieur, 0, 1023, 0, 100);
+  Serial.println((String("Capteur lum : ") + String(lum_exterieur)));
   Serial.println((String("Capteur pluie : ") + String(pluie)));
   Serial.println((String("Capteur temp : ") + String(temp)));
 }
@@ -112,12 +113,12 @@ void setup() {
   lcdRgb.begin(16, 2);
   servomotor_7.attach(PIN_SERVO_7);  // Attacher le servo une seule fois dans setup
   servomotor_7.write(0);  // Mettre le servo à 0 degrés
-  pinMode(PIN_TEMPERATURE_SENSOR_A0, INPUT);
+  pinMode(PIN_TEMPERATURE_SENSOR_A14, INPUT);
   pinMode(PIN_POTENTIOMETER_A2, INPUT);  // Définir la broche du potentiomètre comme entrée
   pinMode(A4, INPUT);
-  pinMode(A6, INPUT);
+  pinMode(A2, INPUT);
   pinMode(4, INPUT);
-  pinMode(10, INPUT); // inter lum 1
+  pinMode(10, OUTPUT); // inter lum 1
   pinMode(12, INPUT); // inter lum 2
   pinMode(6, INPUT); // pluie
   pinMode(13, INPUT); // lum temp
@@ -133,9 +134,11 @@ void loop() {
   if (interrupteur_lum) {
     //Mode lumière auto
     // Si la lumière est en dessous de 20% de la capacité du capteur ( 1023 ) alors la lumière s'allume
-    if (lum_exterieur <= 50000) {
+    if (lum_exterieur <= 50) {
+      Serial.println((String("mater")));
       digitalWrite(10, HIGH);
     } else {
+      Serial.println((String("logic")));
       digitalWrite(10, LOW);
     }
   } else if (interrupteur_lum2) {
