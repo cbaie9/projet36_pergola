@@ -16,8 +16,8 @@ void loop() {
 
     float windSpeed = calculateWindSpeed(rotationCount);
     Serial.print("Vitesse du vent: ");
-    Serial.print(windSpeed);
-    Serial.println(" m/s");
+    Serial.print(windspeed_kmh);
+    Serial.println(" km/h");
 
     rotationCount = 0; // Réinitialiser le compteur
     lastMillis = currentMillis;
