@@ -37,5 +37,5 @@ float calculateWindSpeed(int rotations) {
   float windSpeed = rotationsPerSecond * circumference; // Vitesse en m/s
   float windspeed_kmh = windSpeed*3.6
 
-  return windSpeed;
+  return windspeed_kmh;
 }
