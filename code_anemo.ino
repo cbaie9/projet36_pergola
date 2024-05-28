@@ -35,7 +35,7 @@ float calculateWindSpeed(int rotations) {
   float circumference = 0.3; // Circonférence du capteur en mètres (à ajuster selon le modèle)
   float rotationsPerSecond = rotations / (sampleTime / 1000.0);
   float windSpeed = rotationsPerSecond * circumference; // Vitesse en m/s
-  float windspeed_kmh = windSpeed*3.6
+  float windspeed_kmh = windSpeed*3.6:
 
   return windspeed_kmh;
 }
