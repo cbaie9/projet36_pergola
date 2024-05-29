@@ -128,7 +128,7 @@ void setup() {
 }
 
 void loop() {
-  //Mettre if interupteur gen avant prod final
+ if ( interrupteur_gen ) {
   recup_var();
   lcd();
   if (interrupteur_lum) {
@@ -191,4 +191,5 @@ void loop() {
     servomotor_7.write(angle);  // Définir l'angle du servo
     delay(15);  // Ajouter un léger délai pour stabiliser le signal
   }
+}
 }
