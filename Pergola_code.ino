@@ -152,15 +152,36 @@ void loop() {
     //interrupteur lames = 1 -> auto sinon manuel
     if (limite_vent < vitesse_vent) {
       //Mode vent extreme
+      lcdRgb.begin(16, 2);
+      lcdRgb.setCursor(0, 0);
+      lcdRgb.print(String("                ")); //Effacer la ligne haut du lcd
+      lcdRgb.setCursor(0, 0);
+      lcdRgb.print(String("Mode Vent Extrm"));
       servomotor_7.write(45);
+      
     } else if (temp < 2 && pluie) {
       //Mode neige
+      lcdRgb.begin(16, 2);
+      lcdRgb.setCursor(0, 0);
+      lcdRgb.print(String("                ")); //Effacer la ligne haut du lcd
+      lcdRgb.setCursor(0, 0);
+      lcdRgb.print(String("Mode Neige"));
       servomotor_7.write(90);
     } else if (temp < 2) {
       //Mode Gel
+      lcdRgb.begin(16, 2);
+      lcdRgb.setCursor(0, 0);
+      lcdRgb.print(String("                ")); //Effacer la ligne haut du lcd
+      lcdRgb.setCursor(0, 0);
+      lcdRgb.print(String("Mode gel"));
       servomotor_7.write(90);
     } else if (pluie) {
       //Mode pluie
+      lcdRgb.begin(16, 2);
+      lcdRgb.setCursor(0, 0);
+      lcdRgb.print(String("                ")); //Effacer la ligne haut du lcd
+      lcdRgb.setCursor(0, 0);
+      lcdRgb.print(String("Mode Neige"));
       servomotor_7.write(25);
     }
   } else {
