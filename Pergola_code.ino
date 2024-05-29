@@ -87,13 +87,13 @@ void lcd() {
 }
 
 void recup_var() {
-  //Mettre "true" de interrupteur gen sur d5 avant prod
-  interrupteur_gen = true;
+  //Mettre "true" de interrupteur gen sur d2 avant prod
+  interrupteur_gen = digitalRead(2);
   interrupteur_lames = digitalRead(4);
   //interrupteur_lum | on = auto ; off = interrupteu_lum2
-  //Mettre "true" de interrupteur lum sur d10 avant prod
-  interrupteur_lum = true;
-  //interrupteur_lum2 | off = éteindre , on = éclairage standard
+  //Mettre "true" de interrupteur lum sur d8 avant prod
+  interrupteur_lum = digitalRead(8);
+  //interrupteur_lum2 | off = éteindre , on = éclairage standard (d12)
   interrupteur_lum2 = digitalRead(12);
   vitesse_vent = analogRead(A6);
   temp = getGroveTemperature(PIN_TEMPERATURE_SENSOR_A14, 0);
