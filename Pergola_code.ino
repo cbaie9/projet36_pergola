@@ -63,7 +63,7 @@ void serial_setupConnection(int baudrate) {
 
 void lcd() {
   if (interrupteur_lum) {
-    texte1 = "Automatique";
+    texte1 = "Auto";
   } else {
     if (interrupteur_lum2) {
       texte1 = "Manuel: On";
@@ -80,7 +80,7 @@ void lcd() {
     lcdRgb.print(String((String("Lum :  ") + String(lum_exterieur))));
   } else if (loop_lrgb >= 60 && loop_lrgb < 120) {
     lcdRgb.setCursor(0, 1);
-    lcdRgb.print(String((String("Temp : ") + String(temp))));
+    lcdRgb.print(String((String("Temp (C°): ") + String(temp))));
   } else if (loop_lrgb > 120) {
     loop_lrgb = 0;
   }
@@ -136,10 +136,10 @@ void loop() {
     //Mode lumière auto
     // Si la lumière est en dessous de 35% de la capacité du capteur ( 1023 ) alors la lumière s'allume
     if (lum_exterieur <= 35) {
-      Serial.println((String("mater")));
+      Serial.println((String("Err materiel")));
       digitalWrite(2, HIGH);
     } else {
-      Serial.println((String("logic")));
+      Serial.println((String("Err logiciel")));
       digitalWrite(2, LOW);
     }
   } else if (interrupteur_lum2) {
