@@ -118,7 +118,8 @@ void setup() {
   pinMode(A4, INPUT);
   pinMode(A2, INPUT);
   pinMode(4, INPUT);
-  pinMode(10, OUTPUT); // inter lum 1
+  pinMode(2, OUTPUT); //Relais led
+  pinMode(10, INPUT); // inter lum 1
   pinMode(12, INPUT); // inter lum 2
   pinMode(6, INPUT); // pluie
   pinMode(13, INPUT); // lum temp
@@ -133,20 +134,20 @@ void loop() {
   lcd();
   if (interrupteur_lum) {
     //Mode lumière auto
-    // Si la lumière est en dessous de 20% de la capacité du capteur ( 1023 ) alors la lumière s'allume
-    if (lum_exterieur <= 50) {
+    // Si la lumière est en dessous de 35% de la capacité du capteur ( 1023 ) alors la lumière s'allume
+    if (lum_exterieur <= 35) {
       Serial.println((String("mater")));
-      digitalWrite(10, HIGH);
+      digitalWrite(2, HIGH);
     } else {
       Serial.println((String("logic")));
-      digitalWrite(10, LOW);
+      digitalWrite(2, LOW);
     }
   } else if (interrupteur_lum2) {
     //Mode lumière standard
-    digitalWrite(10, HIGH);
+    digitalWrite(2, HIGH);
   } else {
     //Mode lumière éteinte
-    digitalWrite(10, LOW);
+    digitalWrite(2, LOW);
   }
   if (interrupteur_lames) {
     //interrupteur lames = 1 -> auto sinon manuel
