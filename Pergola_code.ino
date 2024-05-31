@@ -77,10 +77,10 @@ void lcd() {
   loop_lrgb += 1;
   if (loop_lrgb >= 0 && loop_lrgb < 60) {
     lcdRgb.setCursor(0, 1);
-    lcdRgb.print(String((String("Lum :  ") + String(lum_exterieur))));
+    lcdRgb.print(String((String("Lum :  ") + String(lum_exterieur) +(String(" %      "))));
   } else if (loop_lrgb >= 60 && loop_lrgb < 120) {
     lcdRgb.setCursor(0, 1);
-    lcdRgb.print(String((String("Temp (C°): ") + String(temp))));
+    lcdRgb.print(String((String("Temp (C): ") + String(temp))));
   } else if (loop_lrgb > 120) {
     loop_lrgb = 0;
   }
